@@ -25,7 +25,7 @@ def previousEmail(spotify_user):
     keys = fb.searchDb('spotify_user',spotify_user)
     #passing key to retrieve top artists for the user 
     previous_email = fb.getpreviousEmail(keys)
-    #return user's top_artists
+    #return user's top_artist(s)
     return previous_email
 
 
