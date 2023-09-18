@@ -90,3 +90,7 @@ def checkUser(spotify_user,email):
     else:
         print('user does not exist')
         return make_response({'msg':'User does not have an account'},404)
+    
+
+if __name__ == "__main__":
+    app.run(debug=True)
