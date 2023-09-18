@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+google-api-core = "*"
+google-api-python-client = "*"
+google-auth = "*"
+firebase-admin = "*"
+google-auth-httplib2 = "*"
+google-cloud-core = "*"
+google-cloud-firestore = "*"
+google-cloud-storage = "*"
+flask = "*"
+gunicorn = "*"
+requests = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
