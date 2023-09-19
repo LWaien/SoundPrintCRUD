@@ -23,10 +23,15 @@ def topartists(spotify_user):
 def previousEmail(spotify_user):
     #retrieving user key that we want to query
     keys = fb.searchDb('spotify_user',spotify_user)
-    #passing key to retrieve top artists for the user 
+    #check that the previous email was made within the past 7 days. Otherwise we need to call api to generate a new one
+    refreshFlag = fb.checkPrevListDate(keys)
     previous_email = fb.getpreviousEmail(keys)
-    #return user's top_artist(s)
-    return previous_email
+
+    #returns status codes that represent date refresh needs so that the front end can make an async call to refresh the concert list if it is out of date (404 status code)
+    if refreshFlag is True:
+        return make_response(previous_email,200)
+    else:
+        return make_response(previous_email,404)
 
 
 @app.route("/addEmailInfo",methods=['GET'])
@@ -91,6 +96,7 @@ def checkUser(spotify_user,email):
         print('user does not exist')
         return make_response({'msg':'User does not have an account'},404)
     
+
 
 if __name__ == "__main__":
     app.run(debug=True)

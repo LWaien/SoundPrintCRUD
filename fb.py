@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import datetime
 import json
 import fb
 
@@ -91,6 +92,31 @@ def get_topartists(keys):
     artist_data = artist_data[0]['top_artists']['items']
     return artist_data
 
+def checkPrevListDate(keys):
+    user_key = keys[0]
+    user = users.child(user_key)
+    try:
+        prev_email = user.get('previous_list')
+        prev_date = prev_email[0]['last_email']
+        
+        date_format = "%m-%d-%Y"
+        list_date = datetime.strptime(prev_date, date_format)
+        today_date = datetime.now()
+
+        # Extract the difference in days as an integer
+        time_difference = today_date - list_date 
+        prev_list_counter = time_difference.days
+
+        if prev_date == "":
+            return False
+        #if list is less than or equal 7 days old we allow it to be shown
+        elif prev_list_counter <= 7:
+            return True
+        else:
+            return False
+    except:
+        return False
+    
 def getpreviousEmail(keys):
     user_key = keys[0]
     user = users.child(user_key)
