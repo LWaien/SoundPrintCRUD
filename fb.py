@@ -106,6 +106,7 @@ def checkPrevListDate(keys):
         # Extract the difference in days as an integer
         time_difference = today_date - list_date 
         prev_list_counter = time_difference.days
+        print(prev_list_counter)
 
         if prev_date == "":
             return False
