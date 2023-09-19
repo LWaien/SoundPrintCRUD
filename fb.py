@@ -116,6 +116,7 @@ def checkPrevListDate(keys):
         else:
             return False
     except:
+        print("system failed")
         return False
     
 def getpreviousEmail(keys):
