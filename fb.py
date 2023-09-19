@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-import datetime
+from datetime import datetime
 import json
 import fb
 
@@ -116,7 +116,6 @@ def checkPrevListDate(keys):
         else:
             return False
     except:
-        print("system failed")
         return False
     
 def getpreviousEmail(keys):
