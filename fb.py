@@ -108,7 +108,7 @@ def checkPrevListDate(keys):
         prev_list_counter = time_difference.days
         print(prev_list_counter)
 
-        if prev_date == "":
+        if prev_date == "" or prev_date is None:
             return False
         #if list is less than or equal 7 days old we allow it to be shown
         elif prev_list_counter <= 7:
