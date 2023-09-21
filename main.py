@@ -28,11 +28,14 @@ def previousEmail(spotify_user):
         refreshFlag = fb.checkPrevListDate(keys)
         previous_email = fb.getpreviousEmail(keys)
     except:
+        print("Previous list data not available")
         return make_response({'msg':'data not loaded'},403)
     #returns status codes that represent date refresh needs so that the front end can make an async call to refresh the concert list if it is out of date (404 status code)
     if refreshFlag is True:
+        print("previous list sent")
         return make_response(previous_email,200)
     else:
+        print("Previous list not due for a refresh")
         return make_response(previous_email,404)
 
 
