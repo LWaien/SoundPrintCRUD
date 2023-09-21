@@ -24,9 +24,11 @@ def previousEmail(spotify_user):
     #retrieving user key that we want to query
     keys = fb.searchDb('spotify_user',spotify_user)
     #check that the previous email was made within the past 7 days. Otherwise we need to call api to generate a new one
-    refreshFlag = fb.checkPrevListDate(keys)
-    previous_email = fb.getpreviousEmail(keys)
-
+    try:
+        refreshFlag = fb.checkPrevListDate(keys)
+        previous_email = fb.getpreviousEmail(keys)
+    except:
+        return make_response({'msg':'data not loaded'},403)
     #returns status codes that represent date refresh needs so that the front end can make an async call to refresh the concert list if it is out of date (404 status code)
     if refreshFlag is True:
         return make_response(previous_email,200)
