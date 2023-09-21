@@ -35,6 +35,8 @@ def previousEmail(spotify_user):
         print("previous list sent")
         return make_response(previous_email,200)
     else:
+        if previous_email is None:
+            print("empty list")
         print("Previous list not due for a refresh")
         return make_response(previous_email,404)
 
