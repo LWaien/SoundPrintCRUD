@@ -127,3 +127,20 @@ def getpreviousEmail(keys):
         return prev_email
     except:
         return None
+    
+def checkRecSetup(keys):
+    user_key = keys[0]
+    user = users.child(user_key)
+    try:
+        dist = user.get('maxdist')
+        maxdist = dist[0]['maxdist']
+
+        if maxdist == "" or maxdist is None:
+            print("recs set up: False")
+            return False
+        else:
+            print("recs set up: True")
+            return True
+    except:
+        print("recs set up: False")
+        return False

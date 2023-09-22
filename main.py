@@ -25,6 +25,7 @@ def previousEmail(spotify_user):
     keys = fb.searchDb('spotify_user',spotify_user)
     #check that the previous email was made within the past 7 days. Otherwise we need to call api to generate a new one
     refreshFlag = fb.checkPrevListDate(keys)
+    checkRecSetup = fb.checkRecSetup(keys)
     previous_email = fb.getpreviousEmail(keys)
 
         
@@ -33,11 +34,18 @@ def previousEmail(spotify_user):
         print("previous list sent")
         return make_response(previous_email,200)
     else:
-        if previous_email is None:
-            print("Previous list data not available")
-            return make_response({'msg':'data not loaded'},403)
-        print("Previous list not due for a refresh")
-        return make_response(previous_email,404)
+        #if there's no list to pull but rec is setup, the concerts should be loading
+        if previous_email is None and checkRecSetup is True:
+            print("Previous list data not available, but loading")
+            return make_response({'msg':'data loading'},403)
+        #if no concerts at all and no set up, prompt user to set them up
+        if previous_email is None and checkRecSetup is False:
+            print("Previous list data not available, requesting to set up recs")
+            return make_response({'msg':'data loading'},402)
+        #else, refresh flag is false but everything is good. Just means list is not due for an update
+        else:
+            print("Previous list not due for a refresh")
+            return make_response(previous_email,404)
 
 
 @app.route("/addEmailInfo",methods=['GET'])
