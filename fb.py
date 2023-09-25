@@ -75,9 +75,9 @@ def searchDbForUser(search_key,search_value):
         print(result)
         key_ids = list(result.keys())
         usernames = list(result.values())
-        return key_ids,usernames
+        return key_ids,usernames['spotify_user']
     else:
-        return None
+        return None, None
 
 
 def addSpotifyData(spotify_user,topartists,libdata,topsongs):
