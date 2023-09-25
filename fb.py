@@ -58,6 +58,28 @@ def searchDb(search_key,search_value):
     else:
         return None
 
+#Modified version of searchDb designed to look for partial completions
+def searchDbForUser(search_key,search_value):
+
+    # Retrieve the entire dataset
+    user = users.get()
+
+    # Filter the data locally based on the key-value pair
+    if user:
+        result = {
+            key: value
+            for key, value in user.items()
+            if search_value.lower() in value.get(search_key).lower() 
+        }
+        print("result:")
+        print(result)
+        key_ids = list(result.keys())
+        usernames = list(result.values())
+        return key_ids
+    else:
+        return None
+
+
 def addSpotifyData(spotify_user,topartists,libdata,topsongs):
     #search for user in db
     print(f"Adding user data for {spotify_user}")

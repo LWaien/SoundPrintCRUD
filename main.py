@@ -110,7 +110,10 @@ def checkUser(spotify_user,email):
         print('user does not exist')
         return make_response({'msg':'User does not have an account'},404)
     
-
+@app.route("/searchUser/<spotify_user>",methods=['GET'])
+def searchUser(spotify_user):
+    keys = fb.searchDb('spotify_user',spotify_user)
+    return keys
 
 if __name__ == "__main__":
     app.run(debug=True)
