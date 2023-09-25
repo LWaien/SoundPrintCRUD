@@ -120,8 +120,8 @@ def searchUser(spotify_user):
     return make_response({'users':searchlist},200)
 
 @app.route("/sendInvite/<sender_spotify>/<recipient_id>")
-def sendInvite(sender_spotfiy,recipient_id):
-    resp = fb.sendInv(sender_spotfiy,recipient_id)
+def sendInvite(sender_spotify,recipient_id):
+    resp = fb.sendInv(sender_spotify,recipient_id)
     return resp
 
 if __name__ == "__main__":
