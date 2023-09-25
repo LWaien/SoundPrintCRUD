@@ -115,7 +115,7 @@ def searchUser(spotify_user):
     keys,usernames = fb.searchDbForUser('spotify_user',spotify_user)
     searchlist = []
     for i in range(len(keys)):
-        user = {'id':keys[i],'spotify_user':usernames[i]}
+        user = {'id':keys[i],'spotify_user':usernames[i]['spotify_user']}
         searchlist.append(user)
     return make_response({'users':searchlist},200)
 
