@@ -75,7 +75,7 @@ def searchDbForUser(search_key,search_value):
         print(result)
         key_ids = list(result.keys())
         usernames = list(result.values())
-        return key_ids
+        return key_ids,usernames
     else:
         return None
 

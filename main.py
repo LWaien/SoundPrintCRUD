@@ -112,8 +112,12 @@ def checkUser(spotify_user,email):
     
 @app.route("/searchUser/<spotify_user>",methods=['GET'])
 def searchUser(spotify_user):
-    keys = fb.searchDb('spotify_user',spotify_user)
-    return keys
+    keys,usernames = fb.searchDb('spotify_user',spotify_user)
+    searchlist = []
+    for i in range(len(keys)):
+        user = {'id':keys[i],'spotify_user':usernames[i]}
+        searchlist.append(user)
+    return make_response({'users':searchlist},200)
 
 if __name__ == "__main__":
     app.run(debug=True)
