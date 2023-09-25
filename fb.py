@@ -37,7 +37,8 @@ def createNewUser(spotify_user):
         'location': '',
         'last_email': '',
         'top_artists': '',
-        'libdata': ''
+        'libdata': '',
+        'invites':''
         })
 
 
@@ -166,3 +167,33 @@ def checkRecSetup(keys):
     except:
         print("recs set up: False")
         return False
+    
+
+def sendInv(sender_username,recipient_id):
+    sender_id = searchDb('spotify_user',sender_username)
+    friend_request = {
+        'id': sender_id,
+        'username': sender_username
+    }
+
+    # Use a transaction to append the friend request to the 'invites' array
+    def transaction(transaction_data):
+        if 'invites' not in transaction_data:
+            transaction_data['invites'] = []
+
+        # Check if the friend request already exists
+        for invite in transaction_data['invites']:
+            if invite['id'] == sender_id:
+                return None  # Request already sent
+
+        # Append the friend request
+        transaction_data['invites'].append(friend_request)
+        return transaction_data
+
+    user_ref = ref.child(recipient_id)
+    
+    try:
+        user_ref.transaction(transaction)
+        return "Friend request sent successfully."
+    except db.TransactionError:
+        return "Failed to send friend request."
