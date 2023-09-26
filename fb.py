@@ -190,6 +190,7 @@ def sendInv(sender_username,recipient_id):
             transaction_data['invites'] = []
 
         for invite in transaction_data['invites']:
+            print(invite['username'])
             if invite['username'] == sender_id:
                  return None  # Request already sent
 
