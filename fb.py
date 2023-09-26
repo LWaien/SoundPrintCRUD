@@ -221,9 +221,9 @@ def getInvites(spotify_user):
 def acceptInvite(friend_user,friend_id,spotify_user):
 
     try:
-        user_id = searchDb('spotify_user',spotify_user)
+        user_id = searchDb('spotify_user', spotify_user)
     except:
-        return "Failed to accept friend request",404
+        return "Failed to accept friend request", 404
 
     friend_data = {
         'id': friend_id,
@@ -232,28 +232,38 @@ def acceptInvite(friend_user,friend_id,spotify_user):
 
     # Use a transaction to append the friend request to the 'invites' array
     def transaction(transaction_data):
-
         if transaction_data is None:
             transaction_data = {}
 
         if 'friends' not in transaction_data:
             transaction_data['friends'] = []
 
-        duplicateFlag = False
-        for friend in transaction_data['friends']:
-            #print(invite['username'])
-            if friend['username'] == friend_user:
-                 duplicateFlag = True
-                 #print(duplicateFlag) # Request already sent
+        if 'invites' not in transaction_data:
+            transaction_data['invites'] = []
 
-        if duplicateFlag is False:
+        
+        
+        
+        duplicateFlag = False
+
+        for friend in transaction_data['friends']:
+            if friend['username'] == friend_user:
+                duplicateFlag = True
+
+
+        if not duplicateFlag:
             transaction_data['friends'].append(friend_data)
+            # Remove friend from invites list now that we added to friends
+            for invite in transaction_data['invites']:
+                if invite['username'] == friend_user:
+                    transaction_data['invites'].remove(invite)  
+
         return transaction_data
 
     user_ref = users.child(user_id[0])
-    
+
     try:
         user_ref.transaction(transaction)
-        return "Friend request accepted",200
+        return "Friend request accepted", 200
     except:
-        return "Failed to accept friend request",404
+        return "Failed to accept friend request", 404
