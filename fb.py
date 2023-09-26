@@ -194,7 +194,7 @@ def sendInv(sender_username,recipient_id):
             #print(invite['username'])
             if invite['username'] == sender_username:
                  duplicateFlag = True
-                 print(duplicateFlag) # Request already sent
+                 #print(duplicateFlag) # Request already sent
 
         if duplicateFlag is False:
             transaction_data['invites'].append(friend_request)
@@ -218,3 +218,42 @@ def getInvites(spotify_user):
     except:
         return None
     
+def acceptInvite(friend_user,friend_id,spotify_user):
+
+    try:
+        user_id = searchDb('spotify_user',spotify_user)
+    except:
+        return "Failed to accept invite",404
+
+    friend_data = {
+        'id': friend_id,
+        'username': friend_user
+    }
+
+    # Use a transaction to append the friend request to the 'invites' array
+    def transaction(transaction_data):
+
+        if transaction_data is None:
+            transaction_data = {}
+
+        if 'friends' not in transaction_data:
+            transaction_data['friends'] = []
+
+        duplicateFlag = False
+        for friend in transaction_data['friends']:
+            #print(invite['username'])
+            if friend['username'] == spotify_user:
+                 duplicateFlag = True
+                 #print(duplicateFlag) # Request already sent
+
+        if duplicateFlag is False:
+            transaction_data['friends'].append(friend_data)
+        return transaction_data
+
+    user_ref = users.child(user_id[0])
+    
+    try:
+        user_ref.transaction(transaction)
+        return "Friend request sent successfully",200
+    except:
+        return "Failed to send friend request",404

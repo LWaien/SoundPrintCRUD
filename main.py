@@ -134,6 +134,14 @@ def getInvites(spotify_user):
         return make_response({'invites':invites},200)
     except:
         return make_response({'msg':'Unable to retrieve invitations'},404)
+    
+@app.route("/acceptInvite/<friend_user>/<friend_id>/<spotify_user>",methods=['GET'])
+def acceptInvite(friend_user,friend_id,spotify_user):
+    try:
+        resp,code = fb.acceptInvite(friend_user,friend_id,spotify_user)
+        return make_response({'msg':resp},code)
+    except:
+        return make_response({'msg':'Failed to accept invite'},404)
 
 if __name__ == "__main__":
     app.run(debug=True)
