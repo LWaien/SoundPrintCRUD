@@ -15,6 +15,7 @@ google-cloud-storage = "*"
 flask = "*"
 gunicorn = "*"
 requests = "*"
+flask-cors = "*"
 
 [dev-packages]
 
