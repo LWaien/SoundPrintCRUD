@@ -181,10 +181,11 @@ def sendInv(sender_username,recipient_id):
         if 'invites' not in transaction_data:
             transaction_data['invites'] = []
 
-        # Check if the friend request already exists
-        for invite in transaction_data['invites']:
-            if invite['id'] == sender_id:
-                return None  # Request already sent
+        else:
+            # Check if the friend request already exists
+            for invite in transaction_data['invites']:
+                if invite['id'] == sender_id:
+                    return None  # Request already sent
 
         # Append the friend request
         transaction_data['invites'].append(friend_request)
@@ -195,5 +196,5 @@ def sendInv(sender_username,recipient_id):
     try:
         user_ref.transaction(transaction)
         return "Friend request sent successfully."
-    except db.TransactionError:
+    except:
         return "Failed to send friend request."
