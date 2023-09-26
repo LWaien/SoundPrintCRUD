@@ -254,6 +254,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
             # Remove friend from invites list now that we added to friends
             for invite in transaction_data['invites']:
                 if invite['username'] == friend_user:
+                    print('removing user from invites')
                     transaction_data['invites'].remove(invite)  
 
         return transaction_data
