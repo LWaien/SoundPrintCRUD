@@ -172,7 +172,7 @@ def checkRecSetup(keys):
 def sendInv(sender_username,recipient_id):
     sender_id = searchDb('spotify_user',sender_username)
     friend_request = {
-        'id': sender_id,
+        'id': sender_id[0],
         'username': sender_username
     }
 
