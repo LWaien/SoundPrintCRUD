@@ -190,7 +190,7 @@ def sendInv(sender_username,recipient_id):
             transaction_data['invites'] = []
 
         for invite in transaction_data['invites']:
-            if invite['id'] == sender_id:
+            if invite['username'] == sender_id:
                  return None  # Request already sent
 
         # Append the friend request
