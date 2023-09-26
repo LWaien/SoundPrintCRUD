@@ -142,6 +142,14 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         return make_response({'msg':resp},code)
     except:
         return make_response({'msg':'Failed to accept request'},404)
-
+    
+@app.route("/friends/<spotify_user>",methods=['GET'])
+def getFriends(spotify_user):
+    try:
+        friends = fb.getFriends(spotify_user)
+        return make_response({'friends':friends},200)
+    except:
+        return make_response({'msg':'Failed to load friends list'},404)
+    
 if __name__ == "__main__":
     app.run(debug=True)

@@ -242,8 +242,6 @@ def acceptInvite(friend_user,friend_id,spotify_user):
             transaction_data['invites'] = []
 
         
-        
-        
         duplicateFlag = False
 
         for friend in transaction_data['friends']:
@@ -267,3 +265,15 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         return "Friend request accepted", 200
     except:
         return "Failed to accept friend request", 404
+    
+def getFriends(spotify_user):
+
+    user_id = searchDb('spotify_user', spotify_user)
+ 
+    
+    user = users.child(user_id[0])
+
+
+    friends_list = user.get('friends')
+    friends = friends_list[0]['friends']
+    return friends
