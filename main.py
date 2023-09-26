@@ -141,7 +141,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         resp,code = fb.acceptInvite(friend_user,friend_id,spotify_user)
         return make_response({'msg':resp},code)
     except:
-        return make_response({'msg':'Failed to accept invite'},404)
+        return make_response({'msg':'Failed to accept request'},404)
 
 if __name__ == "__main__":
     app.run(debug=True)

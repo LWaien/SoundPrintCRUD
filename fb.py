@@ -223,7 +223,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
     try:
         user_id = searchDb('spotify_user',spotify_user)
     except:
-        return "Failed to accept invite",404
+        return "Failed to accept friend request",404
 
     friend_data = {
         'id': friend_id,
@@ -242,7 +242,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         duplicateFlag = False
         for friend in transaction_data['friends']:
             #print(invite['username'])
-            if friend['username'] == spotify_user:
+            if friend['username'] == friend_user:
                  duplicateFlag = True
                  #print(duplicateFlag) # Request already sent
 
@@ -254,6 +254,6 @@ def acceptInvite(friend_user,friend_id,spotify_user):
     
     try:
         user_ref.transaction(transaction)
-        return "Friend request sent successfully",200
+        return "Friend request accepted",200
     except:
-        return "Failed to send friend request",404
+        return "Failed to accept friend request",404
