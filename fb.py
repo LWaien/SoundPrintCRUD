@@ -192,7 +192,7 @@ def sendInv(sender_username,recipient_id):
         duplicateFlag = False
         for invite in transaction_data['invites']:
             #print(invite['username'])
-            if invite['username'] == sender_id:
+            if invite['username'] == sender_username:
                  duplicateFlag = True
                  print(duplicateFlag) # Request already sent
 
