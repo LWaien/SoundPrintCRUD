@@ -207,3 +207,14 @@ def sendInv(sender_username,recipient_id):
         return "Friend request sent successfully",200
     except:
         return "Failed to send friend request",404
+    
+def getInvites(spotify_user):
+    ids = searchDb('spotify_user',spotify_user)
+    user = users.child(ids[0])
+    try:
+        invite_list = user.get('invites')
+        invites = invite_list[0]['invites']
+        return invites
+    except:
+        return None
+    

@@ -119,13 +119,21 @@ def searchUser(spotify_user):
         searchlist.append(user)
     return make_response({'users':searchlist},200)
 
-@app.route("/sendInvite/<sender_spotify>/<recipient_id>")
+@app.route("/sendInvite/<sender_spotify>/<recipient_id>",methods=['GET'])
 def sendInvite(sender_spotify,recipient_id):
     try:
         resp,code = fb.sendInv(sender_spotify,recipient_id)
         return make_response({'msg':resp},code)
     except:
         return make_response({'msg':'Failed to send friend request'},404)
+    
+@app.route("/getInvites/<spotify_user>",methods=['GET'])
+def getInvites(spotify_user):
+    try:
+        invites  = fb.getInvites(spotify_user)
+        return make_response({'invites':invites},200)
+    except:
+        return make_response({'msg':'Unable to retrieve invitations'},404)
 
 if __name__ == "__main__":
     app.run(debug=True)
