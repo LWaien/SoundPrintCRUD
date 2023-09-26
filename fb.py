@@ -170,7 +170,11 @@ def checkRecSetup(keys):
     
 
 def sendInv(sender_username,recipient_id):
-    sender_id = searchDb('spotify_user',sender_username)
+    try:
+        sender_id = searchDb('spotify_user',sender_username)
+    except:
+        return "Failed to send friend request.",404
+    
     friend_request = {
         'id': sender_id[0],
         'username': sender_username
@@ -197,6 +201,6 @@ def sendInv(sender_username,recipient_id):
     
     try:
         user_ref.transaction(transaction)
-        return "Friend request sent successfully."
+        return "Friend request sent successfully.",200
     except:
-        return "Failed to send friend request."
+        return "Failed to send friend request.",404
