@@ -121,8 +121,11 @@ def searchUser(spotify_user):
 
 @app.route("/sendInvite/<sender_spotify>/<recipient_id>")
 def sendInvite(sender_spotify,recipient_id):
-    resp,code = fb.sendInv(sender_spotify,recipient_id)
-    return make_response({'msg':resp},code)
+    try:
+        resp,code = fb.sendInv(sender_spotify,recipient_id)
+        return make_response({'msg':resp},code)
+    except:
+        return make_response({'msg':'Failed to send friend request'},404)
 
 if __name__ == "__main__":
     app.run(debug=True)
