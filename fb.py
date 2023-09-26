@@ -189,13 +189,15 @@ def sendInv(sender_username,recipient_id):
         if 'invites' not in transaction_data:
             transaction_data['invites'] = []
 
+        duplicateFlag = False
         for invite in transaction_data['invites']:
-            print(invite['username'])
+            #print(invite['username'])
             if invite['username'] == sender_id:
-                 return None  # Request already sent
+                 duplicateFlag = True
+                 print(duplicateFlag) # Request already sent
 
-        # Append the friend request
-        transaction_data['invites'].append(friend_request)
+        if duplicateFlag is False:
+            transaction_data['invites'].append(friend_request)
         return transaction_data
 
     user_ref = users.child(recipient_id)
