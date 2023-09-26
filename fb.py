@@ -178,20 +178,22 @@ def sendInv(sender_username,recipient_id):
 
     # Use a transaction to append the friend request to the 'invites' array
     def transaction(transaction_data):
+
+        if transaction_data is None:
+            transaction_data = {}
+
         if 'invites' not in transaction_data:
             transaction_data['invites'] = []
 
-        else:
-            # Check if the friend request already exists
-            for invite in transaction_data['invites']:
-                if invite['id'] == sender_id:
-                    return None  # Request already sent
+        for invite in transaction_data['invites']:
+            if invite['id'] == sender_id:
+                 return None  # Request already sent
 
         # Append the friend request
         transaction_data['invites'].append(friend_request)
         return transaction_data
 
-    user_ref = ref.child(recipient_id)
+    user_ref = users.child(recipient_id)
     
     try:
         user_ref.transaction(transaction)
