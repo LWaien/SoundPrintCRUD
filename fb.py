@@ -278,3 +278,33 @@ def getFriends(spotify_user):
     friends_list = user.get('friends')
     friends = friends_list[0]['friends']
     return friends
+
+
+def addPending(spotify_user, recipient_id):
+    # Get the sender's data by their Spotify username
+    sender_ids = searchDb('spotify_user', spotify_user)
+
+    if sender_ids:
+        sender_id = sender_ids[0]
+        sender_ref = users.child(sender_id)
+
+        # Retrieve the existing sent invites
+        sender_data = sender_ref.get()
+        sent_invites = sender_data.get('sent_invites', [])
+
+        # Check for duplicate invites and avoid adding duplicates
+        duplicate_invite = any(invite['id'] == recipient_id for invite in sent_invites)
+
+        if not duplicate_invite:
+            # Add the new invite to the sent_invites list
+            new_invite = {'id': recipient_id}
+            sent_invites.append(new_invite)
+
+            # Update the sender's data with the new sent_invites list
+            sender_ref.update({'sent_invites': sent_invites})
+
+            return {'msg': f'Sent friend request to {recipient_id} added to sent_invites'}, 200
+        else:
+            return {'msg': 'Friend request already sent to this user'}, 400
+    else:
+        return {'msg': 'Sender not found'}, 404

@@ -124,6 +124,8 @@ def searchUser(spotify_user):
 def sendInvite(sender_spotify,recipient_id):
     try:
         resp,code = fb.sendInv(sender_spotify,recipient_id)
+        #add request to pending invites to store on user side
+        fb.addPending(sender_spotify,recipient_id)
         return make_response({'msg':resp},code)
     except:
         return make_response({'msg':'Failed to send friend request'},404)
@@ -152,5 +154,8 @@ def getFriends(spotify_user):
     except:
         return make_response({'msg':'Failed to load friends list'},404)
     
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
