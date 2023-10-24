@@ -262,7 +262,7 @@ def acceptInvite(friend_user, friend_id, spotify_user):
         user_ref.transaction(transaction)
 
         # Remove the friend request from the inviting user's sent invites list
-        removePending(friend_id, spotify_user)
+        removePending(friend_user, user_id[0])
 
         # Now, add the accepting user to the friend's list of the inviting user
         accepting_user_id = searchDb('spotify_user', friend_user)
