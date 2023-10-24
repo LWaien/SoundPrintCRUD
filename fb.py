@@ -299,6 +299,7 @@ def addPending(spotify_user, recipient_id):
             # Add the new invite to the sent_invites list
             recipientuser = users.child(recipient_id)
             recipientusername = recipientuser.get('spotify_user')
+            recipientusername = recipientusername[0]['spotify_user']
             new_invite = {'id': recipient_id,'recipient_username':recipientusername}
             sent_invites.append(new_invite)
 
