@@ -217,6 +217,7 @@ def getInvites(spotify_user):
         return invites
     except:
         return None
+    
 def acceptInvite(friend_user, friend_id, spotify_user):
     try:
         user_id = searchDb('spotify_user', spotify_user)
@@ -261,7 +262,7 @@ def acceptInvite(friend_user, friend_id, spotify_user):
         user_ref.transaction(transaction)
 
         # Remove the friend request from the inviting user's sent invites list
-        removePending(spotify_user, friend_id)
+        removePending(friend_id, spotify_user)
 
         # Now, add the accepting user to the friend's list of the inviting user
         accepting_user_id = searchDb('spotify_user', friend_user)
@@ -293,9 +294,34 @@ def acceptInvite(friend_user, friend_id, spotify_user):
 
             accepting_user_ref.transaction(accepting_user_transaction)
 
+            # Add person B (friend_user) to person A's friends list
+            def person_a_transaction(person_a_data):
+                if person_a_data is None:
+                    person_a_data = {}
+
+                if 'friends' not in person_a_data:
+                    person_a_data['friends'] = []
+
+                if 'invites' not in person_a_data:
+                    person_a_data['invites'] = []
+
+                duplicateFlag = False
+
+                for friend in person_a_data['friends']:
+                    if friend['username'] == friend_user:
+                        duplicateFlag = True
+
+                if not duplicateFlag:
+                    person_a_data['friends'].append({'id': friend_id, 'username': friend_user})
+
+                return person_a_data
+
+            user_ref.transaction(person_a_transaction)
+
         return "Friend request accepted, and friends added", 200
     except:
         return "Failed to accept friend request", 404
+
 
 def getFriends(spotify_user):
 
