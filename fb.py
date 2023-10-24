@@ -292,7 +292,7 @@ def acceptInvite(friend_user, friend_id, spotify_user):
 
                 return accepting_user_data
 
-            accepting_user_ref.transaction(accepting_user_transaction)
+            #accepting_user_ref.transaction(accepting_user_transaction)
 
             # Add person B (friend_user) to person A's friends list
             def person_a_transaction(person_a_data):
