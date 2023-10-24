@@ -263,6 +263,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
 
     try:
         user_ref.transaction(transaction)
+        removePending(spotify_user,friend_id)
         return "Friend request accepted", 200
     except:
         return "Failed to accept friend request", 404
@@ -323,3 +324,33 @@ def getPending(spotify_user):
     sent_invites = user.get('sent_invites')
     pendingList = sent_invites[0]['sent_invites']
     return pendingList
+
+
+
+def removePending(sender_spotify_user, recipient_id):
+    # Get the sender's data by their Spotify username
+    sender_ids = searchDb('spotify_user', sender_spotify_user)
+
+    if sender_ids:
+        sender_id = sender_ids[0]
+        sender_ref = users.child(sender_id)
+
+        # Retrieve the existing sent invites
+        sender_data = sender_ref.get()
+        sent_invites = sender_data.get('sent_invites', [])
+
+        # Check if the recipient_id exists in the sent_invites list
+        found_invite = next((invite for invite in sent_invites if invite['id'] == recipient_id), None)
+
+        if found_invite:
+            # Remove the invite from the sent_invites list
+            sent_invites.remove(found_invite)
+
+            # Update the sender's data with the updated sent_invites list
+            sender_ref.update({'sent_invites': sent_invites})
+
+            return {'msg': f'Friend request to {recipient_id} removed from sent_invites'}, 200
+        else:
+            return {'msg': 'Friend request not found in the sent_invites list'}, 404
+    else:
+        return {'msg': 'Sender not found'}, 404
