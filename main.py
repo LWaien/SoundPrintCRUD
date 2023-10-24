@@ -154,7 +154,13 @@ def getFriends(spotify_user):
     except:
         return make_response({'msg':'Failed to load friends list'},404)
     
-
+@app.route("/pending/<spotify_user>",methods=['GET'])
+def getFriends(spotify_user):
+    try:
+        pending_list = fb.getPending(spotify_user)
+        return make_response({'pending_list':pending_list},200)
+    except:
+        return make_response({'msg':'Failed to load pending invites list'},404)
 
 
 if __name__ == "__main__":

@@ -308,3 +308,15 @@ def addPending(spotify_user, recipient_id):
             return {'msg': 'Friend request already sent to this user'}, 400
     else:
         return {'msg': 'Sender not found'}, 404
+
+def getPending(spotify_user):
+
+    user_id = searchDb('spotify_user', spotify_user)
+ 
+    
+    user = users.child(user_id[0])
+
+
+    sent_invites = user.get('sent_invites')
+    pendingList = sent_invites[0]['sent_invites']
+    return pendingList
