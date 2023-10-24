@@ -297,7 +297,9 @@ def addPending(spotify_user, recipient_id):
 
         if not duplicate_invite:
             # Add the new invite to the sent_invites list
-            new_invite = {'id': recipient_id}
+            recipientuser = users.child(recipient_id)
+            recipientusername = recipientuser.get('spotify_user')
+            new_invite = {'id': recipient_id,'recipient_username':recipientusername}
             sent_invites.append(new_invite)
 
             # Update the sender's data with the new sent_invites list
