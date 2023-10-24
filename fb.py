@@ -217,9 +217,7 @@ def getInvites(spotify_user):
         return invites
     except:
         return None
-    
-def acceptInvite(friend_user,friend_id,spotify_user):
-
+def acceptInvite(friend_user, friend_id, spotify_user):
     try:
         user_id = searchDb('spotify_user', spotify_user)
     except:
@@ -230,7 +228,7 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         'username': friend_user
     }
 
-    # Use a transaction to append the friend request to the 'invites' array
+    # Use a transaction to append the friend request to the 'friends' array of the accepting user
     def transaction(transaction_data):
         if transaction_data is None:
             transaction_data = {}
@@ -241,21 +239,19 @@ def acceptInvite(friend_user,friend_id,spotify_user):
         if 'invites' not in transaction_data:
             transaction_data['invites'] = []
 
-        
         duplicateFlag = False
 
         for friend in transaction_data['friends']:
             if friend['username'] == friend_user:
                 duplicateFlag = True
 
-
         if not duplicateFlag:
             transaction_data['friends'].append(friend_data)
+
             # Remove friend from invites list now that we added to friends
             for invite in transaction_data['invites']:
                 if invite['username'] == friend_user:
-                    print('removing user from invites')
-                    transaction_data['invites'].remove(invite)  
+                    transaction_data['invites'].remove(invite)
 
         return transaction_data
 
@@ -263,10 +259,20 @@ def acceptInvite(friend_user,friend_id,spotify_user):
 
     try:
         user_ref.transaction(transaction)
-        removePending(spotify_user,friend_id)
-        return "Friend request accepted", 200
+
+        # Remove the friend request from the inviting user's sent invites list
+        removeInvite(spotify_user, friend_id)
+
+        # Now, add the accepting user to the friend's list of the inviting user
+        accepting_user_id = searchDb('spotify_user', friend_user)
+        if accepting_user_id:
+            accepting_user_ref = users.child(accepting_user_id[0])
+            accepting_user_ref.transaction(transaction)
+
+        return "Friend request accepted, and friends added", 200
     except:
         return "Failed to accept friend request", 404
+
     
 def getFriends(spotify_user):
 
@@ -325,8 +331,6 @@ def getPending(spotify_user):
     pendingList = sent_invites[0]['sent_invites']
     return pendingList
 
-
-
 def removePending(sender_spotify_user, recipient_id):
     # Get the sender's data by their Spotify username
     sender_ids = searchDb('spotify_user', sender_spotify_user)
@@ -354,3 +358,37 @@ def removePending(sender_spotify_user, recipient_id):
             return {'msg': 'Friend request not found in the sent_invites list'}, 404
     else:
         return {'msg': 'Sender not found'}, 404
+
+
+
+def removeInvite(sender_spotify_user, recipient_id):
+    # Get the sender's data by their Spotify username
+    sender_ids = searchDb('spotify_user', sender_spotify_user)
+
+    if sender_ids:
+        sender_id = sender_ids[0]
+        sender_ref = users.child(sender_id)
+
+        # Retrieve the existing invites
+        sender_data = sender_ref.get()
+        invites = sender_data.get('invites', [])
+
+        # Check if the recipient_id exists in the invites list
+        found_invite = next((invite for invite in invites if invite['id'] == recipient_id), None)
+
+        if found_invite:
+            # Remove the invite from the invites list
+            invites.remove(found_invite)
+
+            # Update the sender's data with the updated invites list
+            sender_ref.update({'invites': invites})
+
+            return {'msg': f'Invite to {recipient_id} removed from invites list'}, 200
+        else:
+            return {'msg': 'Invite not found in the invites list'}, 404
+    else:
+        return {'msg': 'Sender not found'}, 404
+    
+
+
+
