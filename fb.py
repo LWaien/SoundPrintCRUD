@@ -266,59 +266,6 @@ def acceptInvite(friend_user, friend_id, spotify_user):
         # Remove the friend request from the inviting user's sent invites list
         removePending(friend_user, user_id[0])
 
-        # Now, add the accepting user to the friend's list of the inviting user
-        accepting_user_id = searchDb('spotify_user', friend_user)
-        if accepting_user_id:
-            accepting_user_ref = users.child(accepting_user_id[0])
-            #accepting_user_ref.transaction(transaction)
-
-            # Add person A (accepting user) to person B's friends list
-            def accepting_user_transaction(accepting_user_data):
-                if accepting_user_data is None:
-                    accepting_user_data = {}
-
-                if 'friends' not in accepting_user_data:
-                    accepting_user_data['friends'] = []
-
-                if 'invites' not in accepting_user_data:
-                    accepting_user_data['invites'] = []
-
-                duplicateFlag = False
-
-                for friend in accepting_user_data['friends']:
-                    if friend['username'] == spotify_user:
-                        duplicateFlag = True
-
-                if not duplicateFlag:
-                    accepting_user_data['friends'].append({'id': user_id[0], 'username': spotify_user})
-
-                return accepting_user_data
-
-            #accepting_user_ref.transaction(accepting_user_transaction)
-
-            # Add person B (friend_user) to person A's friends list
-            def person_a_transaction(person_a_data):
-                if person_a_data is None:
-                    person_a_data = {}
-
-                if 'friends' not in person_a_data:
-                    person_a_data['friends'] = []
-
-                if 'invites' not in person_a_data:
-                    person_a_data['invites'] = []
-
-                duplicateFlag = False
-
-                for friend in person_a_data['friends']:
-                    if friend['username'] == friend_user:
-                        duplicateFlag = True
-
-                if not duplicateFlag:
-                    person_a_data['friends'].append({'id': friend_id, 'username': friend_user})
-
-                return person_a_data
-
-            #user_ref.transaction(person_a_transaction)
 
         return "Friend request accepted, and friends added", 200
     except:
