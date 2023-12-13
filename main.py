@@ -4,8 +4,7 @@ import fb
 from flask_cors import CORS
 
 
-CLIENT_ID = "32f3ca3f815c4b7f91335ffeb5d90f7d"
-CLIENT_SECRET = "3f882c04f6824a68b45b251ff922488a"
+
 
 
 app = Flask(__name__)
