@@ -4,7 +4,7 @@
 
 This API serves as the backend for the SoundPrint project, handling user account management and friend-related functionalities. The API interacts with a Firebase database (largely done in fb.py). The broader SoundPrint project is designed to deliver personalized concert recommendations to users, leveraging data from their Spotify listening habits and the shared music libraries of friends. Through its endpoints, the SoundPrint API facilitates essential operations, ensuring smooth user account management and friend-related functionalities within the SoundPrint platform.
 
-*Note
+*Note: 
 Endpoints are only GET requests because it is easier to pass paramters when using Flask. These endpoints do not need to accept complex json data and the number of parameters is low so I just opted to use Flask GET endpoints for simplicity. 
 
 ## Endpoints
