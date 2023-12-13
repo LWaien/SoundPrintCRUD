@@ -1,97 +1,100 @@
-SoundPrint API Readme
-Project Overview
+# SoundPrint API Readme
+
+## Project Overview
 
 SoundPrint is a platform designed to provide users with personalized concert recommendations based on their Spotify listening habits and the overlap between friends' music libraries. This API serves as the backend for the SoundPrint project, handling user account management and friend-related functionalities.
-Endpoints
-1. /topartists/<spotify_user> - HTTP GET
 
-    Retrieves the top artists for a given Spotify user.
-    Input: spotify_user
-    Output: User's top artists.
+## Endpoints
 
-2. /previousEmail/<spotify_user> - HTTP GET
+### 1. `/topartists/<spotify_user>` - HTTP GET
 
-    Checks if the previous email containing concert recommendations is still valid.
-    Input: spotify_user
-    Output:
-        If the email is still valid, returns the previous email.
-        If the email needs to be refreshed, returns appropriate status codes.
-        Handles various scenarios, including data loading and setup requests.
+- Retrieves the top artists for a given Spotify user.
+- **Input:** `spotify_user`
+- **Output:** User's top artists.
 
-3. /addEmailInfo - HTTP GET
+### 2. `/previousEmail/<spotify_user>` - HTTP GET
 
-    Adds email information to the database.
-    Input: spotify_user, email, first_name, last_name, max_distance, location
-    Output:
-        If successful, returns a success message.
-        If the user already exists, returns a redirect to the login page.
+- Checks if the previous email containing concert recommendations is still valid.
+- **Input:** `spotify_user`
+- **Output:**
+  - If the email is still valid, returns the previous email.
+  - If the email needs to be refreshed, returns appropriate status codes.
+  - Handles various scenarios, including data loading and setup requests.
 
-4. /createNewUser - HTTP GET
+### 3. `/addEmailInfo` - HTTP GET
 
-    Creates a new user in the database.
-    Input: spotify_user
-    Output:
-        If successful, returns a success message.
-        If the user already exists, returns a redirect to the login page.
+- Adds email information to the database.
+- **Input:** `spotify_user`, `email`, `first_name`, `last_name`, `max_distance`, `location`
+- **Output:**
+  - If successful, returns a success message.
+  - If the user already exists, returns a redirect to the login page.
 
-5. /checkUser/<spotify_user>/ - HTTP GET
+### 4. `/createNewUser` - HTTP GET
 
-    Checks if a user exists in the database.
-    Input: spotify_user
-    Output:
-        If the user exists, returns a success message.
-        If the user does not exist, returns a not found message.
+- Creates a new user in the database.
+- **Input:** `spotify_user`
+- **Output:**
+  - If successful, returns a success message.
+  - If the user already exists, returns a redirect to the login page.
 
-6. /checkUser/<spotify_user>/<email> - HTTP GET
+### 5. `/checkUser/<spotify_user>/` - HTTP GET
 
-    Checks if a user exists based on Spotify user and email.
-    Input: spotify_user, email
-    Output:
-        If the user exists, returns a success message.
-        If the user does not exist, returns a not found message.
-        Handles data loading scenarios.
+- Checks if a user exists in the database.
+- **Input:** `spotify_user`
+- **Output:**
+  - If the user exists, returns a success message.
+  - If the user does not exist, returns a not found message.
 
-7. /searchUser/<spotify_user> - HTTP GET
+### 6. `/checkUser/<spotify_user>/<email>` - HTTP GET
 
-    Searches for users in the database based on a partial Spotify username.
-    Input: spotify_user
-    Output: List of matching users.
+- Checks if a user exists based on Spotify user and email.
+- **Input:** `spotify_user`, `email`
+- **Output:**
+  - If the user exists, returns a success message.
+  - If the user does not exist, returns a not found message.
+  - Handles data loading scenarios.
 
-8. /sendInvite/<sender_spotify>/<recipient_id> - HTTP GET
+### 7. `/searchUser/<spotify_user>` - HTTP GET
 
-    Sends a friend invitation from the sender to the recipient.
-    Input: sender_spotify, recipient_id
-    Output:
-        If successful, returns a success message.
-        If unsuccessful, returns an error message.
+- Searches for users in the database based on a partial Spotify username.
+- **Input:** `spotify_user`
+- **Output:** List of matching users.
 
-9. /getInvites/<spotify_user> - HTTP GET
+### 8. `/sendInvite/<sender_spotify>/<recipient_id>` - HTTP GET
 
-    Retrieves pending friend invitations for a user.
-    Input: spotify_user
-    Output: List of pending invitations.
+- Sends a friend invitation from the sender to the recipient.
+- **Input:** `sender_spotify`, `recipient_id`
+- **Output:**
+  - If successful, returns a success message.
+  - If unsuccessful, returns an error message.
 
-10. /acceptInvite/<friend_user>/<friend_id>/<spotify_user> - HTTP GET
+### 9. `/getInvites/<spotify_user>` - HTTP GET
 
-    Accepts a friend invitation.
-    Input: friend_user, friend_id, spotify_user
-    Output:
-        If successful, returns a success message.
-        If unsuccessful, returns an error message.
+- Retrieves pending friend invitations for a user.
+- **Input:** `spotify_user`
+- **Output:** List of pending invitations.
 
-11. /friends/<spotify_user> - HTTP GET
+### 10. `/acceptInvite/<friend_user>/<friend_id>/<spotify_user>` - HTTP GET
 
-    Retrieves the list of friends for a user.
-    Input: spotify_user
-    Output: List of friends.
+- Accepts a friend invitation.
+- **Input:** `friend_user`, `friend_id`, `spotify_user`
+- **Output:**
+  - If successful, returns a success message.
+  - If unsuccessful, returns an error message.
 
-12. /pending/<spotify_user> - HTTP GET
+### 11. `/friends/<spotify_user>` - HTTP GET
 
-    Retrieves the list of pending friend invitations for a user.
-    Input: spotify_user
-    Output: List of pending invitations.
+- Retrieves the list of friends for a user.
+- **Input:** `spotify_user`
+- **Output:** List of friends.
 
-Database
+### 12. `/pending/<spotify_user>` - HTTP GET
+
+- Retrieves the list of pending friend invitations for a user.
+- **Input:** `spotify_user`
+- **Output:** List of pending invitations.
+
+## Database
 
 The API interacts with a Firebase database to store user accounts, friend lists, and related information. Users can perform CRUD operations on their accounts and manage friend relationships through the provided endpoints.
 
